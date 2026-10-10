@@ -3,23 +3,40 @@
 #include "func.h"
 
 void print_err(const status err) {
-    const char *messages[] = {
-        [SUCCESS]                     = "Успешное выполнение.",
-        [ERROR_INVALID_PARAMETER]     = "Ошибка: Переданы некорректные параметры.",
-        [ERROR_FILE_OPEN]             = "Ошибка: Не удалось открыть файл.",
-        [ERROR_FILE_READ]             = "Ошибка: Ошибка чтения из файла.",
-        [ERROR_FILE_WRITE]            = "Ошибка: Ошибка записи в файл.",
-        [ERROR_TOKEN_TOO_LONG]        = "Ошибка: Токен превышает максимально допустимый размер буфера.",
-        [ERROR_INVALID_NUMBER_FORMAT] = "Ошибка: Невалидный формат числа или невоможно определить основание.",
-        [ERROR_OVERFLOW]              = "Ошибка: Переполнение при переводе в десятичную систему счисления."
-    };
-
-    if (err >= SUCCESS && err <= ERROR_OVERFLOW) {
-        fprintf(stderr, "%s\n", messages[err]);
-    } else {
-        fprintf(stderr, "Ошибка: Неизвестная ошибка (код %d).\n", err);
+    switch (err) {
+        case SUCCESS:
+            fprintf(stderr, "Успешное выполнение.\n");
+            break;
+        case ERROR_INVALID_PARAMETER:
+            fprintf(stderr, "Ошибка: Переданы некорректные параметры.\n");
+            break;
+        case ERROR_FILE_OPEN:
+            fprintf(stderr, "Ошибка: Не удалось открыть файл.\n");
+            break;
+        case ERROR_FILE_READ:
+            fprintf(stderr, "Ошибка: Ошибка чтения из файла.\n");
+            break;
+        case ERROR_FILE_WRITE:
+            fprintf(stderr, "Ошибка: Ошибка записи в файл.\n");
+            break;
+        case ERROR_TOKEN_TOO_LONG:
+            fprintf(stderr, "Ошибка: Токен превышает максимально допустимый размер буфера.\n");
+            break;
+        case ERROR_INVALID_NUMBER_FORMAT:
+            fprintf(stderr, "Ошибка: Невалидный формат числа или невозможно определить основание.\n");
+            break;
+        case ERROR_OVERFLOW:
+            fprintf(stderr, "Ошибка: Переполнение при переводе в десятичную систему счисления.\n");
+            break;
+        case ERROR_SAME_FILE:
+            fprintf(stderr, "Ошибка: Одинаковые файлы на ввод и вывод.\n");
+            break;
+        default:
+            fprintf(stderr, "Ошибка: Неизвестная ошибка (код %d).\n", err);
+            break;
     }
 }
+
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {

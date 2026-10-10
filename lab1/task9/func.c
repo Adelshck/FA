@@ -1,5 +1,7 @@
 #include "func.h"
 #include <stdlib.h>
+#include <string.h>
+
 
 status rdm_arr_mn_mx(const long a, const long b, long* nums, long size_nums) {
     if (nums == NULL || size_nums <= 0 || a > b) {
@@ -35,18 +37,36 @@ status rdm_arr_mn_mx(const long a, const long b, long* nums, long size_nums) {
     return SUCCESS;
 }
 
-static long find_closest_val(long val, const long* b, long size_b) {
-    long closest = b[0];
-    long min_diff = labs(val - b[0]);
+static int cmp_long(const void* x, const void* y) {
+    long p = *(const long*)x;
+    long q = *(const long*)y;
+    return (p > q) - (p < q);
+}
 
-    for (long i = 1; i < size_b; i++) {
-        long current_diff = labs(val - b[i]);
-        if (current_diff < min_diff) {
-            min_diff = current_diff;
-            closest = b[i];
+static long find_closest_val(long val, const long* sorted_b, long size_b) {
+    long left = 0;
+    long right = size_b;
+
+    while (left < right) {
+        long mid = left + (right - left) / 2;
+        if (sorted_b[mid] < val) {
+            left = mid + 1;
+        } else {
+            right = mid;
         }
     }
-    return closest;
+
+    if (left == 0) {
+        return sorted_b[0];
+    }
+    if (left == size_b) {
+        return sorted_b[size_b - 1];
+    }
+
+    long diff_left = val - sorted_b[left - 1];
+    long diff_right = sorted_b[left] - val;
+
+    return (diff_left <= diff_right) ? sorted_b[left - 1] : sorted_b[left];
 }
 
 status create_arrays_a_b_c(long** out_a, long* out_size_a, long** out_b, long* out_size_b, long** out_c) {
@@ -77,6 +97,14 @@ status create_arrays_a_b_c(long** out_a, long* out_size_a, long** out_b, long* o
         return ERROR_MEMORY_ALLOCATION;
     }
 
+    long* sorted_b = (long*)malloc(sizeof(long) * size_b);
+    if (sorted_b == NULL) {
+        free(a);
+        free(b);
+        free(c);
+        return ERROR_MEMORY_ALLOCATION;
+    }
+
     for (long i = 0; i < size_a; i++) {
         a[i] = -1000 + rand() % (1000 - (-1000) + 1);
     }
@@ -84,10 +112,16 @@ status create_arrays_a_b_c(long** out_a, long* out_size_a, long** out_b, long* o
         b[i] = -1000 + rand() % (1000 - (-1000) + 1);
     }
 
+    /* сортируем копию, чтобы исходный B остался как был */
+    memcpy(sorted_b, b, sizeof(long) * size_b);
+    qsort(sorted_b, size_b, sizeof(long), cmp_long);
+
     for (long i = 0; i < size_a; i++) {
-        long closest = find_closest_val(a[i], b, size_b);
+        long closest = find_closest_val(a[i], sorted_b, size_b);
         c[i] = a[i] + closest;
     }
+
+    free(sorted_b);
 
     *out_a = a;
     *out_b = b;

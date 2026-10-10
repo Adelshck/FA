@@ -1,6 +1,18 @@
 #include "func.h"
 #include <ctype.h>
 #include <limits.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+
+static bool is_same_file(const char *path_a, const char *path_b) {
+    struct stat sa, sb;
+
+    if (stat(path_a, &sa) != 0 || stat(path_b, &sb) != 0) {
+        return false; 
+    }
+
+    return sa.st_dev == sb.st_dev && sa.st_ino == sb.st_ino;
+}
 
 status read_token(FILE *stream, char *out_buffer, size_t buffer_size, bool *out_is_eof) {
     if (stream == NULL || out_buffer == NULL || out_is_eof == NULL || buffer_size < 2) {
@@ -162,6 +174,10 @@ status parse_to_decimal(const char *str, int base, long long *out_value) {
 }
 
 status process_files(const char *input_path, const char *output_path) {
+    
+    if (is_same_file(input_path, output_path)) {
+        return ERROR_SAME_FILE;
+    }
     if (input_path == NULL || output_path == NULL) {
         return ERROR_INVALID_PARAMETER;
     }
