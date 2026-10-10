@@ -7,19 +7,19 @@
 void print_error(const status err) {
     switch (err) {
         case ERROR_INVALID_ARGUMENTS:
-            fprintf(stderr, "Ошибка: Некорректное количество или значение аргументов.\n");
+            printf( "Ошибка: Некорректное количество или значение аргументов.\n");
             break;
         case ERROR_CONVERGENCE_FAILED:
-            fprintf(stderr, "Ошибка: Превышено максимальное число итераций, ряд не сходится.\n");
+            printf("Ошибка: Превышено максимальное число итераций, ряд не сходится.\n");
             break;
         case ERROR_OVERFLOW:
-            fprintf(stderr, "Ошибка: Произошло переполнение при вычислениях.\n");
+            printf( "Ошибка: Произошло переполнение при вычислениях.\n");
             break;
         case ERROR_ZERO_DIVISION:
-            fprintf(stderr, "Ошибка: Деление на ноль строго запрещено.\n");
+            printf("Ошибка: Деление на ноль строго запрещено.\n");
             break;
         default:
-            fprintf(stderr, "Ошибка: Неизвестный код ошибки (%d).\n", err);
+            printf("Ошибка: Неизвестный код ошибки (%d).\n", err);
             break;
     }
 }

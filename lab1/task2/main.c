@@ -6,16 +6,16 @@
 static void print_error(const status_code err) {
     switch (err) {
         case STATUS_INVALID_INPUT:
-            fprintf(stderr, "Ошибка: Некорректный аргумент. Ожидается число epsilon в диапазоне (0, 1).\n");
+            printf("Ошибка: Некорректный аргумент. Ожидается число epsilon в диапазоне (0, 1).\n");
             break;
         case STATUS_OVERFLOW:
-            fprintf(stderr, "Ошибка: Переполнение при считывании или вычислении.\n");
+            printf("Ошибка: Переполнение при считывании или вычислении.\n");
             break;
         case STATUS_MAX_ITERATIONS:
-            fprintf(stderr, "Ошибка: Превышено максимальное число итераций (метод не сошелся).\n");
+            printf("Ошибка: Превышено максимальное число итераций (метод не сошелся).\n");
             break;
         default:
-            fprintf(stderr, "Неизвестная ошибка (код %d).\n", err);
+            printf("Неизвестная ошибка (код %d).\n", err);
             break;
     }
 }

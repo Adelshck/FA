@@ -9,16 +9,16 @@ status print_error(const status err) {
     switch (err)
     {
     case ERROR_INVALID_ARGUMENTS:
-        fprintf(stderr, "Ошибка: Некорректное количество или значение аргументов.\n");
+        printf("Ошибка: Некорректное количество или значение аргументов.\n");
         break;
     case ERROR_MEMORY_ALLOCATION:
-        fprintf(stderr, "Ошибка: Некорректное выделение памяти.\n");
+        printf("Ошибка: Некорректное выделение памяти.\n");
         break;
     case ERROR_OVERFLOW:
-        fprintf(stderr, "Ошибка: Переполнение переменной.\n");
+        printf("Ошибка: Переполнение переменной.\n");
         break;
     default:
-        fprintf(stderr, "Неизвестная ошибка.\n");
+        printf("Неизвестная ошибка.\n");
         break;
     }
     return SUCCESS;

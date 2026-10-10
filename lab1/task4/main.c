@@ -11,23 +11,29 @@ void print_error(const status err) {
         case SUCCESS:
             break;
         case ERROR_INVALID_PARAMETER:
-            fprintf(stderr, "Ошибка: Некорректный параметр, флаг или путь к файлу.\n");
+            printf("Ошибка: Некорректный параметр, флаг или путь к файлу.\n");
             break;
         case ERROR_FILE_OPEN:
-            fprintf(stderr, "Ошибка: Не удалось открыть файл.\n");
+            printf("Ошибка: Не удалось открыть файл.\n");
             break;
         case ERROR_SAME_FILE:
-            fprintf(stderr, "Ошибка: Входной и выходной файлы совпадают.\n");
+            printf("Ошибка: Входной и выходной файлы совпадают.\n");
             break;
+        case ERROR_FILE_WRITE:
+            printf("Ошибка: Не удалось записать в выходной файл.\n");
+            break;
+        case ERROR_FILE_READ:
+            printf("Ошибка: Не удалось прочитать входной файл.\n");
+            break;            
         default:
-            fprintf(stderr, "Ошибка: Произошел неизвестный сбой (%d).\n", err);
+            printf("Ошибка: Произошел неизвестный сбой (%d).\n", err);
             break;
     }
 }
 
 int main(int argc, char *argv[]) {
     if (argc < 3 || argc > 4) {
-        fprintf(stderr, "Использование: %s <флаг> <входной_файл> [выходной_файл]\n", argv[0]);
+        printf("Использование: %s <флаг> <входной_файл> [выходной_файл]\n", argv[0]);
         print_error(ERROR_INVALID_PARAMETER);
         return ERROR_INVALID_PARAMETER;
     }

@@ -6,22 +6,22 @@
 void print_error(const status err) {
     switch (err) {
         case ERROR_INVALID_ARGUMENTS:
-            fprintf(stderr, "Ошибка: Некорректное количество или значение аргументов.\n");
+            printf("Ошибка: Некорректное количество или значение аргументов.\n");
             break;
         case ERROR_UNKNOWN_FLAG:
-            fprintf(stderr, "Ошибка: Неизвестный флаг. Поддерживаются: -q, -m, -t (или /q, /m, /t).\n");
+            printf("Ошибка: Неизвестный флаг. Поддерживаются: -q, -m, -t (или /q, /m, /t).\n");
             break;
         case ERROR_INVALID_NUMBER:
-            fprintf(stderr, "Ошибка: Некорректный формат числа.\n");
+            printf("Ошибка: Некорректный формат числа.\n");
             break;
         case ERROR_ZERO_DIVISION:
-            fprintf(stderr, "Ошибка: Деление на ноль строго запрещено.\n");
+            printf("Ошибка: Деление на ноль строго запрещено.\n");
             break;
         case ERROR_INVALID_DATA:
-            fprintf(stderr, "Ошибка: Входные данные не соответствуют предметной области.\n");
+            printf("Ошибка: Входные данные не соответствуют предметной области.\n");
             break;
         default:
-            fprintf(stderr, "Ошибка: Неизвестный код ошибки (%d).\n", err);
+            printf("Ошибка: Неизвестный код ошибки (%d).\n", err);
             break;
     }
 }

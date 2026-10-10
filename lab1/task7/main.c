@@ -8,28 +8,28 @@
 static void print_error(const status st) {
     switch (st) {
         case ERROR_INVALID_PARAMETER:
-            fprintf(stderr, "Ошибка: неверные параметры командной строки или формат пути.\n");
+            printf("Ошибка: неверные параметры командной строки или формат пути.\n");
             break;
         case ERROR_UNKNOWN_FLAG:
-            fprintf(stderr, "Ошибка: неизвестный флаг. Поддерживаются только -r, /r, -a, /a.\n");
+            printf("Ошибка: неизвестный флаг. Поддерживаются только -r, /r, -a, /a.\n");
             break;
         case ERROR_FILE_OPEN:
-            fprintf(stderr, "Ошибка: не удалось открыть один из указанных файлов.\n");
+            printf("Ошибка: не удалось открыть один из указанных файлов.\n");
             break;
         case ERROR_FILE_READ:
-            fprintf(stderr, "Ошибка при чтении из файла (возможно, переполнение буфера лексемы).\n");
+            printf( "Ошибка при чтении из файла (возможно, переполнение буфера лексемы).\n");
             break;
         case ERROR_FILE_WRITE:
-            fprintf(stderr, "Ошибка записи в выходной файл.\n");
+            printf("Ошибка записи в выходной файл.\n");
             break;
         case ERROR_SAME_FILE:
-            fprintf(stderr, "Ошибка: входной и выходной файлы не могут совпадать.\n");
+            printf("Ошибка: входной и выходной файлы не могут совпадать.\n");
             break;
         case ERROR_MEMORY_ALLOCATION:
-            fprintf(stderr, "Ошибка перевыделения / недостатка памяти.\n");
+            printf("Ошибка перевыделения / недостатка памяти.\n");
             break;
         default:
-            fprintf(stderr, "Произошла неизвестная ошибка (код: %d).\n", st);
+            printf("Произошла неизвестная ошибка (код: %d).\n", st);
             break;
     }
 }

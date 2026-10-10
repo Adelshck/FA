@@ -6,22 +6,22 @@
 void print_error(const status_code err) {
     switch (err) {
         case STATUS_INVALID_INPUT:
-            fprintf(stderr, "Ошибка: Некорректный ввод аргументов.\n");
+            printf("Ошибка: Некорректный ввод аргументов.\n");
             break;
         case STATUS_INVALID_RANGE:
-            fprintf(stderr, "Ошибка: Число выходит за допустимый диапазон для данного флага.\n");
+            printf("Ошибка: Число выходит за допустимый диапазон для данного флага.\n");
             break;
         case STATUS_OVERFLOW:
-            fprintf(stderr, "Ошибка: Произошло переполнение типом данных.\n");
+            printf("Ошибка: Произошло переполнение типом данных.\n");
             break;
         case STATUS_MEMORY_ERROR:
-            fprintf(stderr, "Ошибка: Не удалось выделить память.\n");
+            printf("Ошибка: Не удалось выделить память.\n");
             break;
         case STATUS_NOT_FOUND:
-            fprintf(stderr, "Ошибка: Результат не найден.\n");
+            printf("Ошибка: Результат не найден.\n");
             break;
         default:
-            fprintf(stderr, "Неизвестная ошибка.\n");
+            printf("Неизвестная ошибка.\n");
             break;
     }
 }

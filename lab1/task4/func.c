@@ -22,7 +22,19 @@ static status open_files(const char *in_path, const char *out_path, FILE **in, F
 
     return SUCCESS;
 }
+static status close_files(FILE *in, FILE *out) {
+    int read_failed = ferror(in);
+    int write_failed = ferror(out);
 
+    fclose(in);
+    if (fclose(out) != 0 || write_failed) {
+        return ERROR_FILE_WRITE;
+    }
+    if (read_failed) {
+        return ERROR_FILE_READ;
+    }
+    return SUCCESS;
+}
 status generate_output_path(const char *in_path, char *out_path, const int max_len) {
     if (in_path == NULL || out_path == NULL || max_len <= 0) {
         return ERROR_INVALID_PARAMETER;
@@ -83,10 +95,7 @@ status func_d(const char *in_path, const char *out_path) {
         }
     }
 
-    fclose(in);
-    fclose(out);
-
-    return SUCCESS;
+    return close_files(in, out);
 }
 
 status func_i(const char *in_path, const char *out_path) {
@@ -118,10 +127,7 @@ status func_i(const char *in_path, const char *out_path) {
         fprintf(out, " [букв: %d]", letter_count);
     }
 
-    fclose(in);
-    fclose(out);
-
-    return SUCCESS;
+    return close_files(in, out);
 }
 
 status func_s(const char *in_path, const char *out_path) {
@@ -159,10 +165,7 @@ status func_s(const char *in_path, const char *out_path) {
         fprintf(out, " [спецсимволов: %d]", spec_count);
     }
 
-    fclose(in);
-    fclose(out);
-
-    return SUCCESS;
+    return close_files(in, out);
 }
 
 status func_a(const char *in_path, const char *out_path) {
@@ -181,8 +184,5 @@ status func_a(const char *in_path, const char *out_path) {
         }
     }
 
-    fclose(in);
-    fclose(out);
-
-    return SUCCESS;
+    return close_files(in, out);
 }
