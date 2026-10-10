@@ -13,6 +13,12 @@ void print_error(const status err) {
         case ERROR_INVALID_PARAMETER:
             fprintf(stderr, "Ошибка: Некорректный параметр, флаг или путь к файлу.\n");
             break;
+        case ERROR_FILE_OPEN:
+            fprintf(stderr, "Ошибка: Не удалось открыть файл.\n");
+            break;
+        case ERROR_SAME_FILE:
+            fprintf(stderr, "Ошибка: Входной и выходной файлы совпадают.\n");
+            break;
         default:
             fprintf(stderr, "Ошибка: Произошел неизвестный сбой (%d).\n", err);
             break;
@@ -51,16 +57,18 @@ int main(int argc, char *argv[]) {
 
     if (has_n) {
         st = parse_path(argv[3], out_path, PATH_BUF_SIZE);
-        if (st != SUCCESS) {
-            print_error(st);
-            return st;
-        }
     } else {
         st = generate_output_path(in_path, out_path, PATH_BUF_SIZE);
-        if (st != SUCCESS) {
-            print_error(st);
-            return st;
-        }
+    }
+    if (st != SUCCESS) {
+        print_error(st);
+        return st;
+    }
+
+    st = check_same_file(in_path, out_path);
+    if (st != SUCCESS) {
+        print_error(st);
+        return st;
     }
 
     char action = has_n ? flag[2] : flag[1];

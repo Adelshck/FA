@@ -1,15 +1,13 @@
 #include "parse.h"
-#include <stdlib.h>
 #include <string.h>
 #include "status.h"
-
 
 status parse_flag(const char *str, char *out_flag) {
     if (str == NULL || out_flag == NULL) {
         return ERROR_INVALID_PARAMETER;
     }
 
-    int len = strlen(str);
+    int len = (int)strlen(str);
     if (len != 2 && len != 3) {
         return ERROR_INVALID_PARAMETER;
     }
@@ -36,9 +34,8 @@ status parse_flag(const char *str, char *out_flag) {
     return SUCCESS;
 }
 
-
 status parse_path(const char *str, char *out_str, const int max_len) {
-    if (str == NULL || out_str == NULL) {
+    if (str == NULL || out_str == NULL || max_len <= 0) {
         return ERROR_INVALID_PARAMETER;
     }
 
@@ -47,20 +44,6 @@ status parse_path(const char *str, char *out_str, const int max_len) {
     }
 
     if ((int)strlen(str) >= max_len) {
-        return ERROR_INVALID_PARAMETER;
-        }
-
-    const char *dot = strrchr(str, '.');
-
-    if (dot == NULL || dot == str) {
-        return ERROR_INVALID_PARAMETER;
-    }
-
-    if (strchr(dot, '/') != NULL || strchr(dot, '\\') != NULL) {
-        return ERROR_INVALID_PARAMETER;
-    }
-
-    if (dot[1] == '\0') {
         return ERROR_INVALID_PARAMETER;
     }
 
