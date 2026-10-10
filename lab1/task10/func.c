@@ -36,7 +36,7 @@ status str_to_num(const char* str,const long base, long long* out_val){
         pch++;
     }
 
-    if (*pch == '-' || *pch == '=' || *pch == '\0') {
+    if (*pch == '-' || *pch == '+' || *pch == '\0') {
         return ERROR_INVALID_ARGUMENTS;
     }
 

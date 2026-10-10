@@ -18,7 +18,9 @@ status parse_base (const char *str, long *out_val) {
     if (val == LONG_MAX || val == LONG_MIN) {
         return ERROR_INVALID_ARGUMENTS;
     }
-
+    if (val < 2 || val > 36) {
+        return ERROR_INVALID_ARGUMENTS;
+    }
     *out_val = val;
     return SUCCESS;
 }

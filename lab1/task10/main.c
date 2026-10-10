@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include "parse.h"
 #include "status.h"
 #include "func.h"
-#include <limits.h>
-#include <stdlib.h>
 
 #define SIZE_BUF 256
+
 void print_error(const status err) {
     switch (err) {
         case ERROR_INVALID_ARGUMENTS:
@@ -26,25 +26,38 @@ int main(int argc, char* argv[]) {
         print_error(ERROR_INVALID_ARGUMENTS);
         return ERROR_INVALID_ARGUMENTS;
     }
+
     char str[64];
     long base;
     long long sum = 0;
     long long max = 0;
+    int count = 0;
 
     status err = parse_base(argv[1], &base);
     if (err != SUCCESS) {
         print_error(err);
         return err;
     }
-    
-    scanf("%63s", str);
-    while(strcmp(str, "Stop")) {
+
+    while (1) {
+        /* EOF или ошибка ввода до "Stop" */
+        if (scanf("%63s", str) != 1) {
+            print_error(ERROR_INVALID_ARGUMENTS);
+            return ERROR_INVALID_ARGUMENTS;
+        }
+
+        if (strcmp(str, "Stop") == 0) {
+            break;
+        }
+
         long long num;
         err = str_to_num(str, base, &num);
         if (err != SUCCESS) {
             print_error(err);
             return err;
         }
+
+        /* проверка переполнения суммы */
         if (num > 0 && sum > 0) {
             if (num > LLONG_MAX - sum) {
                 print_error(ERROR_OVERFLOW);
@@ -57,30 +70,47 @@ int main(int argc, char* argv[]) {
             }
         }
         sum += num;
-        
-        long long abs_num = (num < 0) ? -num : num;
-        long long abs_max = (max < 0) ? -max : max;
 
-        if (abs_num > abs_max) {
+        /* максимум по модулю: сравниваем через отрицательные значения,
+           чтобы избежать UB при LLONG_MIN */
+        if (count == 0) {
             max = num;
+        } else {
+            long long neg_num = (num > 0) ? -num : num;
+            long long neg_max = (max > 0) ? -max : max;
+            if (neg_num < neg_max) {
+                max = num;
+            }
         }
 
-        scanf("%63s", str);
+        count++;
     }
+
+    /* ни одного числа не введено */
+    if (count == 0) {
+        print_error(ERROR_INVALID_ARGUMENTS);
+        return ERROR_INVALID_ARGUMENTS;
+    }
+
+    /* сами числа в десятичной системе */
+    printf("%lld %lld\n", sum, max);
+
     char buf[SIZE_BUF];
-    for(int i = 9; i < 37; i+=9) {
-        err = num_to_str(sum,i, buf, SIZE_BUF);
+    for (int b = 9; b <= 36; b += 9) {
+        err = num_to_str(sum, b, buf, SIZE_BUF);
         if (err != SUCCESS) {
             print_error(err);
             return err;
         }
         printf("%s ", buf);
 
-        err = num_to_str(max,i, buf, SIZE_BUF);
+        err = num_to_str(max, b, buf, SIZE_BUF);
         if (err != SUCCESS) {
             print_error(err);
             return err;
         }
-        printf("%s \n", buf);
+        printf("%s\n", buf);
     }
+
+    return 0;
 }
